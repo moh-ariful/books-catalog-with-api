@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+<br />
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<br />
+{% block content %}
+<div class="container mt-1">
+  <h1><strong>Book Catalog</strong></h1>
+  <hr />
+  <div class="card mx-5 mt-5" style="width: 61rem">
+    {% for book in books %}
+    <br />
+    {% if book.image %}
+    <img
+      src="{{ book.image.url }}"
+      class="img-thumbnail"
+      width="300px"
+      alt="..."
+    />
+    {% endif %}
+    <div class="card-body">
+      <small>{{ book.published }}</small>
+      <h2 class="card-title">{{ book.title }}</h2>
+
+      <div class="row">
+        <div class="col-md-6"><p>Author: {{ book.author_name }}</p></div>
+        <div class="col-md-6 text-right">Category: {{ book.category }}</div>
+      </div>
+      <p class="card-text mb-1">{{ book.description }}</p>
+
+      <a href="{% url 'detailbook' book.pk %}" class="btn btn-primary mb-5 mt-1">More</a>
+<hr>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container">
+    <div class="pagination">
+      <span class="step-links">
+        {% if books.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ books.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ books.number }} of {{ books.paginator.num_pages }}.
+        </span>
+
+        {% if books.has_next %}
+        <a href="?page={{ books.next_page_number }}">next</a>
+        <a href="?page={{ books.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+</div>
+{% endblock content %}
